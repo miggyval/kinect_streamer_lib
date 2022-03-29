@@ -70,10 +70,15 @@ int main(int argc, char** argv) {
             std::cout << "Failed to start Kinect Serial no.: " << serial << std::endl;
             exit(-1);
         }
-        kin_dev->init_registration();
         kin_devs[serial] = kin_dev;
     }
 
+    for (std::string serial : serials) {
+        // For each device, initialise the intrinsic parameters from the device
+        kin_devs[serial]->init_params();
+        // For each device, initialise the registration object
+        kin_devs[serial]->init_registration();
+    }
 
     for (std::string serial : serials) {
         cv::namedWindow(serial, cv::WINDOW_NORMAL);
@@ -96,8 +101,19 @@ int main(int argc, char** argv) {
 
             cv::Mat img_color(cv::Size(color->width, color->height), CV_8UC4, color->data);
             cv::Mat img_depth(cv::Size(depth->width, depth->height), CV_32FC1, depth->data);
-        
 
+
+            libfreenect2::Registration* registration = kin_devs[serial]->get_registration();
+
+            std::unique_ptr<libfreenect2::Frame> undistorted = std::make_unique<libfreenect2::Frame>(512, 424, 4);
+            std::unique_ptr<libfreenect2::Frame> registered = std::make_unique<libfreenect2::Frame>(512, 424, 4);
+
+            cv::Mat img_undistorted(cv::Size(undistorted->width, undistorted->height), CV_32FC1, undistorted->data);
+            cv::Mat img_registered(cv::Size(registered->width, registered->height), CV_8UC4, registered->data);
+
+            registration->apply(color, depth, undistorted.get(), registered.get());
+            registration->undistortDepth(depth, undistorted.get());
+    
             cv::Mat img_bgr;
             cv::cvtColor(img_color, img_bgr, cv::COLOR_BGRA2BGR);
             const cv::Mat cvImageToProcess = img_bgr.clone();
@@ -107,13 +123,45 @@ int main(int argc, char** argv) {
             auto poseKeypoints = datumProcessed->at(0)->poseKeypoints;
             const auto numberPeopleDetected = poseKeypoints.getSize(0);
             const auto numberBodyParts = poseKeypoints.getSize(1);
-            for (int n = 0; n < numberPeopleDetected; n++) {
-                for (int m = 0; m < numberBodyParts; m++) {
-                    const double x = poseKeypoints[{n, m, 0}];
-                    const double y = poseKeypoints[{n, m, 1}];
-                    const double c = poseKeypoints[{n, m, 2}];
-                    cv::circle(img_bgr, cv::Point(x, y), 3, cv::Scalar(0, 0, 255), -1);
+            if (numberPeopleDetected > 0 && numberBodyParts > 0) {
+                float* row_arr = (float*)malloc(sizeof(float) * numberBodyParts * numberPeopleDetected);
+                float* col_arr = (float*)malloc(sizeof(float) * numberBodyParts * numberPeopleDetected);
+                float* depth_arr = (float*)malloc(sizeof(float) * numberBodyParts * numberPeopleDetected);
+                int numPoints = 0;
+                for (int n = 0; n < numberPeopleDetected; n++) {
+                    for (int m = 0; m < numberBodyParts; m++) {
+                        const double col = poseKeypoints[{n, m, 0}];
+                        const double row = poseKeypoints[{n, m, 1}];
+                        const double con = poseKeypoints[{n, m, 2}];
+                        cv::circle(img_bgr, cv::Point(col, row), 12, cv::Scalar(0, 0, 255), -1);
+                        col_arr[numPoints] = col;
+                        row_arr[numPoints] = row;
+                        depth_arr[numPoints] = depth->data[depth->width * (int)row + (int)col];
+                        numPoints++;
+                    }
                 }
+
+
+                float* x_arr = (float*)malloc(sizeof(float) * numPoints);
+                float* y_arr = (float*)malloc(sizeof(float) * numPoints);
+                float* z_arr = (float*)malloc(sizeof(float) * numPoints);
+
+                kin_devs[serial]->rowColDepthToXYZ(row_arr, col_arr, depth_arr, x_arr, y_arr, z_arr, numPoints);
+                if (numPoints > 0) {
+                    for (int i = 0; i < numPoints; i++) {
+                        if (x_arr[i] == 0 && y_arr[i] == 0 && z_arr[i] == 0) {
+                            continue;
+                        }
+                    }
+                }
+                
+                free(row_arr);
+                free(col_arr);
+                free(depth_arr);
+
+                free(x_arr);
+                free(y_arr);
+                free(z_arr);
             }
             cv::flip(img_bgr, img_bgr, 1);
             cv::imshow(serial, img_bgr);
@@ -121,6 +169,10 @@ int main(int argc, char** argv) {
             
             kin_devs[serial]->release_frames();
         }
+    }
+
+    for (std::string serial : serials) {
+        kin_devs[serial]->stop();
     }
 }
 

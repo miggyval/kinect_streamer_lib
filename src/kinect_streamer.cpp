@@ -100,18 +100,65 @@ int KinectDevice::stop() {
     return dev->stop();
 }
 
+
+/**
+ * @brief Converts small array of depth values (n = numPoints) to points in cartesians space (X,Y,Z)
+ * 
+ * @param depth         Depth image
+ * @param registered    Registered image
+ * @param x             x-coordinates
+ * @param y             y-coordinates
+ * @param z             z-coordinates
+ * @param numPoints     Number of points to process
+ */
+void KinectDevice::rowColDepthToXYZ(const float* row_arr, const float* col_arr, const float* depth_arr, float* x_arr, float* y_arr, float* z_arr, int numPoints) {
+    
+    const float cx = ir_params.cx;
+    const float cy = ir_params.cy;
+    const float fx = 1 / ir_params.fx;
+    const float fy = 1 / ir_params.fy;
+
+    for (int n = 0; n < numPoints; n++) {
+
+        const float row = row_arr[n];
+        const float col = col_arr[n];
+        const float depth_val = depth_arr[n] / 1000.0f;
+
+        if (!isnan(depth_val) && depth_val > 0.001) {
+
+            x_arr[n] = -(col + 0.5 - cx) * fx * depth_val;
+            y_arr[n] = (row + 0.5 - cy) * fy * depth_val;
+            z_arr[n] = depth_val;
+        } else {
+
+            x_arr[n] = 0;
+            y_arr[n] = 0;
+            z_arr[n] = 0;
+        }
+    }
+}
+
+/**
+ * @brief Uses CPU to process depth information to get Point Cloud (ROS - PCL)
+ * 
+ * @param depth         Depth Image
+ * @param registered    Registered Image
+ * @param cloud_data    ROS Point Cloud Data
+ * @param width         Width of Image
+ * @param height        Height of Image
+ */
 void KinectDevice::getPointCloudCpu(const float* depth, const uint32_t* registered, uint8_t* cloud_data, int width, int height) {
 
-    float cx = ir_params.cx;
-    float cy = ir_params.cy;
-    float fx = 1 / ir_params.fx;
-    float fy = 1 / ir_params.fy;
+    const float cx = ir_params.cx;
+    const float cy = ir_params.cy;
+    const float fx = 1 / ir_params.fx;
+    const float fy = 1 / ir_params.fy;
 
     int numElements = width * height;
     const int point_step = 32;
     for (int i = 0; i < numElements; i++) {
-        int row = i / width;
-        int col = i % width;
+        const int row = i / width;
+        const int col = i % width;
         const float depth_val = depth[width * row + col] / 1000.0f;
         if (!isnan(depth_val) && depth_val > 0.001) {
             uint8_t* ptr = cloud_data + i * point_step;
