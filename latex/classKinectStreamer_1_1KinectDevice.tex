@@ -1,0 +1,350 @@
+\hypertarget{classKinectStreamer_1_1KinectDevice}{}\doxysection{Kinect\+Streamer\+::Kinect\+Device Class Reference}
+\label{classKinectStreamer_1_1KinectDevice}\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a6760a5c571b153b4d6ae5ef3a098e5d9}{Kinect\+Device}} (std\+::string serial)
+\begin{DoxyCompactList}\small\item\em Construct a Kinect Device with a given serial number. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_ae2222d007d215cff215598d99236cae9}{$\sim$\+Kinect\+Device}} ()
+\begin{DoxyCompactList}\small\item\em Destruct the Kinect Device. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_acc39956707bcbfaf9b8fca6c7f79dc76}{wait\+\_\+frames}} ()
+\begin{DoxyCompactList}\small\item\em Wait for the next frame to be received. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a5ba3add35fb8c65a0f3b23fe5d1b5d31}{init\+\_\+registration}} ()
+\begin{DoxyCompactList}\small\item\em Initialise the registration for the Kinect v2 using the intrinsic parameters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a50c5fd66bee76db1ca24c51a480b2ebf}{init\+\_\+params}} ()
+\begin{DoxyCompactList}\small\item\em Initialise the camera parameters for the Kinect v2. \end{DoxyCompactList}\item 
+libfreenect2\+::\+Frame $\ast$ \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a13558177f301d74ddeeb5159ca19ce88}{get\+\_\+frame}} (libfreenect2\+::\+Frame\+::\+Type type)
+\begin{DoxyCompactList}\small\item\em Return the frame of type (Depth/\+I\+R/\+Color) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_aeb73c2f7aef3371e7d17f251bd9c9762}{release\+\_\+frames}} ()
+\begin{DoxyCompactList}\small\item\em Free the frames from memory. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a80225e3d3fa90636a43e0bfbdf5dd9e4}{start}} ()
+\begin{DoxyCompactList}\small\item\em Start the Kinect v2 device. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a950912b35f2a2f690c5ad6f994dc162a}{stop}} ()
+\begin{DoxyCompactList}\small\item\em Stop the Kinect v2 device. \end{DoxyCompactList}\item 
+libfreenect2\+::\+Registration $\ast$ \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a20b40bc306a09608b87a15e09e7fb698}{get\+\_\+registration}} ()
+\begin{DoxyCompactList}\small\item\em Get the registration object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a30da8cb1e611fdcfd9fc7946fc1ef090}{get\+Point\+Cloud\+Cuda}} (const float $\ast$depth, const uint32\+\_\+t $\ast$registered, uint8\+\_\+t $\ast$cloud\+\_\+data, int width, int height)
+\begin{DoxyCompactList}\small\item\em Uses G\+PU (C\+U\+DA) to process depth information to get Point Cloud (R\+OS -\/ P\+CL) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a1ba34d8ffca8e6e04e0b378849fb090e}{get\+Point\+Cloud\+Cpu}} (const float $\ast$depth, const uint32\+\_\+t $\ast$registered, uint8\+\_\+t $\ast$cloud\+\_\+data, int width, int height)
+\begin{DoxyCompactList}\small\item\em Uses C\+PU to process depth information to get Point Cloud (R\+OS -\/ P\+CL) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a85c5e99657a7644ad331d963a1fabc1d}{row\+Col\+Depth\+To\+X\+YZ}} (const float $\ast$row\+\_\+arr, const float $\ast$col\+\_\+arr, const float $\ast$depth\+\_\+arr, float $\ast$x\+\_\+arr, float $\ast$y\+\_\+arr, float $\ast$z\+\_\+arr, int num\+Points)
+\begin{DoxyCompactList}\small\item\em Converts small array of depth values (n = num\+Points) to points in cartesians space (X,Y,Z) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a0b132fdeddd70f3d7d7aaefd7a035e5e}{set\+\_\+color\+\_\+params}} (float cx, float cy, float fx, float fy)
+\begin{DoxyCompactList}\small\item\em Set the intrinsic parameters of the R\+GB camera. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a8b27073ab268d9b5e8ec31cd337daa33}{set\+\_\+ir\+\_\+params}} (float cx, float cy, float fx, float fy, float k1, float k2, float k3, float p1, float p2)
+\begin{DoxyCompactList}\small\item\em Set the intrinsic parameters of the R\+GB camera. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_aaf6bc1df5d4c956975914c487f63f6ff}{get\+\_\+color\+\_\+params}} (float \&cx, float \&cy, float \&fx, float \&fy)
+\begin{DoxyCompactList}\small\item\em Get the intrinsic parameters of the R\+GB camera. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classKinectStreamer_1_1KinectDevice_a3523e340125b53a5bc7efa95192f72e7}{get\+\_\+ir\+\_\+params}} (float \&cx, float \&cy, float \&fx, float \&fy, float k1, float k2, float k3, float p1, float p2)
+\begin{DoxyCompactList}\small\item\em Get the intrinsic parameters of the R\+GB camera. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a6760a5c571b153b4d6ae5ef3a098e5d9}\label{classKinectStreamer_1_1KinectDevice_a6760a5c571b153b4d6ae5ef3a098e5d9}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!KinectDevice@{KinectDevice}}
+\index{KinectDevice@{KinectDevice}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{KinectDevice()}{KinectDevice()}}
+{\footnotesize\ttfamily Kinect\+Streamer\+::\+Kinect\+Device\+::\+Kinect\+Device (\begin{DoxyParamCaption}\item[{std\+::string}]{serial }\end{DoxyParamCaption})}
+
+
+
+Construct a Kinect Device with a given serial number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em serial} & Serial Number of the Kinect v2 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_ae2222d007d215cff215598d99236cae9}\label{classKinectStreamer_1_1KinectDevice_ae2222d007d215cff215598d99236cae9}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!````~KinectDevice@{$\sim$KinectDevice}}
+\index{````~KinectDevice@{$\sim$KinectDevice}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{$\sim$KinectDevice()}{~KinectDevice()}}
+{\footnotesize\ttfamily Kinect\+Streamer\+::\+Kinect\+Device\+::$\sim$\+Kinect\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destruct the Kinect Device. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_aaf6bc1df5d4c956975914c487f63f6ff}\label{classKinectStreamer_1_1KinectDevice_aaf6bc1df5d4c956975914c487f63f6ff}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!get\_color\_params@{get\_color\_params}}
+\index{get\_color\_params@{get\_color\_params}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{get\_color\_params()}{get\_color\_params()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::get\+\_\+color\+\_\+params (\begin{DoxyParamCaption}\item[{float \&}]{cx,  }\item[{float \&}]{cy,  }\item[{float \&}]{fx,  }\item[{float \&}]{fy }\end{DoxyParamCaption})}
+
+
+
+Get the intrinsic parameters of the R\+GB camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cx} & The x-\/axis optical center of the camera in pixels. \\
+\hline
+{\em cy} & The y-\/axis optical center of the camera in pixels. \\
+\hline
+{\em fx} & The x-\/axis focal length of the camera in pixels. \\
+\hline
+{\em fy} & The y-\/axis focal length of the camera in pixels. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a13558177f301d74ddeeb5159ca19ce88}\label{classKinectStreamer_1_1KinectDevice_a13558177f301d74ddeeb5159ca19ce88}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!get\_frame@{get\_frame}}
+\index{get\_frame@{get\_frame}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{get\_frame()}{get\_frame()}}
+{\footnotesize\ttfamily libfreenect2\+::\+Frame $\ast$ Kinect\+Streamer\+::\+Kinect\+Device\+::get\+\_\+frame (\begin{DoxyParamCaption}\item[{libfreenect2\+::\+Frame\+::\+Type}]{type }\end{DoxyParamCaption})}
+
+
+
+Return the frame of type (Depth/\+I\+R/\+Color) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of frame to be received \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The frame received 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a3523e340125b53a5bc7efa95192f72e7}\label{classKinectStreamer_1_1KinectDevice_a3523e340125b53a5bc7efa95192f72e7}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!get\_ir\_params@{get\_ir\_params}}
+\index{get\_ir\_params@{get\_ir\_params}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{get\_ir\_params()}{get\_ir\_params()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::get\+\_\+ir\+\_\+params (\begin{DoxyParamCaption}\item[{float \&}]{cx,  }\item[{float \&}]{cy,  }\item[{float \&}]{fx,  }\item[{float \&}]{fy,  }\item[{float}]{k1,  }\item[{float}]{k2,  }\item[{float}]{k3,  }\item[{float}]{p1,  }\item[{float}]{p2 }\end{DoxyParamCaption})}
+
+
+
+Get the intrinsic parameters of the R\+GB camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cx} & The x-\/axis optical center of the camera in pixels. \\
+\hline
+{\em cy} & The y-\/axis optical center of the camera in pixels. \\
+\hline
+{\em fx} & The x-\/axis focal length of the camera in pixels. \\
+\hline
+{\em fy} & The y-\/axis focal length of the camera in pixels. \\
+\hline
+{\em k1} & The radial distortion coefficient of the camera\+: 1st-\/order. \\
+\hline
+{\em k2} & The radial distortion coefficient of the camera\+: 2nd-\/order. \\
+\hline
+{\em k3} & The radial distortion coefficient of the camera\+: 2nd-\/order. \\
+\hline
+{\em p1} & The first tangential distortion coefficient of the camera. \\
+\hline
+{\em p2} & The second tangential distortion coefficient of the camera. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a20b40bc306a09608b87a15e09e7fb698}\label{classKinectStreamer_1_1KinectDevice_a20b40bc306a09608b87a15e09e7fb698}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!get\_registration@{get\_registration}}
+\index{get\_registration@{get\_registration}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{get\_registration()}{get\_registration()}}
+{\footnotesize\ttfamily libfreenect2\+::\+Registration $\ast$ Kinect\+Streamer\+::\+Kinect\+Device\+::get\+\_\+registration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the registration object. 
+
+\begin{DoxyReturn}{Returns}
+The registration object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a1ba34d8ffca8e6e04e0b378849fb090e}\label{classKinectStreamer_1_1KinectDevice_a1ba34d8ffca8e6e04e0b378849fb090e}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!getPointCloudCpu@{getPointCloudCpu}}
+\index{getPointCloudCpu@{getPointCloudCpu}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{getPointCloudCpu()}{getPointCloudCpu()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::get\+Point\+Cloud\+Cpu (\begin{DoxyParamCaption}\item[{const float $\ast$}]{depth,  }\item[{const uint32\+\_\+t $\ast$}]{registered,  }\item[{uint8\+\_\+t $\ast$}]{cloud\+\_\+data,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+
+
+
+Uses C\+PU to process depth information to get Point Cloud (R\+OS -\/ P\+CL) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth} & Depth Image \\
+\hline
+{\em registered} & Registered Image \\
+\hline
+{\em cloud\+\_\+data} & R\+OS Point Cloud Data \\
+\hline
+{\em width} & Width of Image \\
+\hline
+{\em height} & Height of Image \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a30da8cb1e611fdcfd9fc7946fc1ef090}\label{classKinectStreamer_1_1KinectDevice_a30da8cb1e611fdcfd9fc7946fc1ef090}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!getPointCloudCuda@{getPointCloudCuda}}
+\index{getPointCloudCuda@{getPointCloudCuda}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{getPointCloudCuda()}{getPointCloudCuda()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::get\+Point\+Cloud\+Cuda (\begin{DoxyParamCaption}\item[{const float $\ast$}]{depth,  }\item[{const uint32\+\_\+t $\ast$}]{registered,  }\item[{uint8\+\_\+t $\ast$}]{cloud\+\_\+data,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+
+
+
+Uses G\+PU (C\+U\+DA) to process depth information to get Point Cloud (R\+OS -\/ P\+CL) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em depth} & Depth Image \\
+\hline
+{\em registered} & Registered Image \\
+\hline
+{\em cloud\+\_\+data} & R\+OS Point Cloud Data \\
+\hline
+{\em width} & Width of Image \\
+\hline
+{\em height} & Height of Image \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a50c5fd66bee76db1ca24c51a480b2ebf}\label{classKinectStreamer_1_1KinectDevice_a50c5fd66bee76db1ca24c51a480b2ebf}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!init\_params@{init\_params}}
+\index{init\_params@{init\_params}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{init\_params()}{init\_params()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::init\+\_\+params (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialise the camera parameters for the Kinect v2. 
+
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a5ba3add35fb8c65a0f3b23fe5d1b5d31}\label{classKinectStreamer_1_1KinectDevice_a5ba3add35fb8c65a0f3b23fe5d1b5d31}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!init\_registration@{init\_registration}}
+\index{init\_registration@{init\_registration}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{init\_registration()}{init\_registration()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::init\+\_\+registration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialise the registration for the Kinect v2 using the intrinsic parameters. 
+
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_aeb73c2f7aef3371e7d17f251bd9c9762}\label{classKinectStreamer_1_1KinectDevice_aeb73c2f7aef3371e7d17f251bd9c9762}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!release\_frames@{release\_frames}}
+\index{release\_frames@{release\_frames}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{release\_frames()}{release\_frames()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::release\+\_\+frames (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Free the frames from memory. 
+
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a85c5e99657a7644ad331d963a1fabc1d}\label{classKinectStreamer_1_1KinectDevice_a85c5e99657a7644ad331d963a1fabc1d}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!rowColDepthToXYZ@{rowColDepthToXYZ}}
+\index{rowColDepthToXYZ@{rowColDepthToXYZ}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{rowColDepthToXYZ()}{rowColDepthToXYZ()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::row\+Col\+Depth\+To\+X\+YZ (\begin{DoxyParamCaption}\item[{const float $\ast$}]{row\+\_\+arr,  }\item[{const float $\ast$}]{col\+\_\+arr,  }\item[{const float $\ast$}]{depth\+\_\+arr,  }\item[{float $\ast$}]{x\+\_\+arr,  }\item[{float $\ast$}]{y\+\_\+arr,  }\item[{float $\ast$}]{z\+\_\+arr,  }\item[{int}]{num\+Points }\end{DoxyParamCaption})}
+
+
+
+Converts small array of depth values (n = num\+Points) to points in cartesians space (X,Y,Z) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row\+\_\+arr} & Array of rows to be processed. \\
+\hline
+{\em col\+\_\+arr} & Array of columns to be processed \\
+\hline
+{\em depth\+\_\+arr} & Array of depth values to be processed \\
+\hline
+{\em x\+\_\+arr} & Output array of x-\/values \\
+\hline
+{\em y\+\_\+arr} & Output array of x-\/values \\
+\hline
+{\em z\+\_\+arr} & Output array of x-\/values \\
+\hline
+{\em num\+Points} & Number of points in array to process \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a0b132fdeddd70f3d7d7aaefd7a035e5e}\label{classKinectStreamer_1_1KinectDevice_a0b132fdeddd70f3d7d7aaefd7a035e5e}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!set\_color\_params@{set\_color\_params}}
+\index{set\_color\_params@{set\_color\_params}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{set\_color\_params()}{set\_color\_params()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::set\+\_\+color\+\_\+params (\begin{DoxyParamCaption}\item[{float}]{cx,  }\item[{float}]{cy,  }\item[{float}]{fx,  }\item[{float}]{fy }\end{DoxyParamCaption})}
+
+
+
+Set the intrinsic parameters of the R\+GB camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cx} & The x-\/axis optical center of the camera in pixels. \\
+\hline
+{\em cy} & The y-\/axis optical center of the camera in pixels. \\
+\hline
+{\em fx} & The x-\/axis focal length of the camera in pixels. \\
+\hline
+{\em fy} & The y-\/axis focal length of the camera in pixels. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a8b27073ab268d9b5e8ec31cd337daa33}\label{classKinectStreamer_1_1KinectDevice_a8b27073ab268d9b5e8ec31cd337daa33}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!set\_ir\_params@{set\_ir\_params}}
+\index{set\_ir\_params@{set\_ir\_params}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{set\_ir\_params()}{set\_ir\_params()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::set\+\_\+ir\+\_\+params (\begin{DoxyParamCaption}\item[{float}]{cx,  }\item[{float}]{cy,  }\item[{float}]{fx,  }\item[{float}]{fy,  }\item[{float}]{k1,  }\item[{float}]{k2,  }\item[{float}]{k3,  }\item[{float}]{p1,  }\item[{float}]{p2 }\end{DoxyParamCaption})}
+
+
+
+Set the intrinsic parameters of the R\+GB camera. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cx} & The x-\/axis optical center of the camera in pixels. \\
+\hline
+{\em cy} & The y-\/axis optical center of the camera in pixels. \\
+\hline
+{\em fx} & The x-\/axis focal length of the camera in pixels. \\
+\hline
+{\em fy} & The y-\/axis focal length of the camera in pixels. \\
+\hline
+{\em k1} & The radial distortion coefficient of the camera\+: 1st-\/order. \\
+\hline
+{\em k2} & The radial distortion coefficient of the camera\+: 2nd-\/order. \\
+\hline
+{\em k3} & The radial distortion coefficient of the camera\+: 2nd-\/order. \\
+\hline
+{\em p1} & The first tangential distortion coefficient of the camera. \\
+\hline
+{\em p2} & The second tangential distortion coefficient of the camera. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a80225e3d3fa90636a43e0bfbdf5dd9e4}\label{classKinectStreamer_1_1KinectDevice_a80225e3d3fa90636a43e0bfbdf5dd9e4}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!start@{start}}
+\index{start@{start}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily int Kinect\+Streamer\+::\+Kinect\+Device\+::start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Start the Kinect v2 device. 
+
+\begin{DoxyReturn}{Returns}
+The device started successfully 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_a950912b35f2a2f690c5ad6f994dc162a}\label{classKinectStreamer_1_1KinectDevice_a950912b35f2a2f690c5ad6f994dc162a}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!stop@{stop}}
+\index{stop@{stop}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily int Kinect\+Streamer\+::\+Kinect\+Device\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stop the Kinect v2 device. 
+
+\begin{DoxyReturn}{Returns}
+The device stopped successfully 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classKinectStreamer_1_1KinectDevice_acc39956707bcbfaf9b8fca6c7f79dc76}\label{classKinectStreamer_1_1KinectDevice_acc39956707bcbfaf9b8fca6c7f79dc76}} 
+\index{KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}!wait\_frames@{wait\_frames}}
+\index{wait\_frames@{wait\_frames}!KinectStreamer::KinectDevice@{KinectStreamer::KinectDevice}}
+\doxysubsubsection{\texorpdfstring{wait\_frames()}{wait\_frames()}}
+{\footnotesize\ttfamily void Kinect\+Streamer\+::\+Kinect\+Device\+::wait\+\_\+frames (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Wait for the next frame to be received. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/kinect\+\_\+streamer/kinect\+\_\+streamer.\+hpp\item 
+src/kinect\+\_\+streamer.\+cpp\end{DoxyCompactItemize}

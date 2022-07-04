@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/medrobotics/kinect_streamer_lib/build/devel/setup.sh
