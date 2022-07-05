@@ -90,6 +90,22 @@ int main(int argc, char** argv) {
     
     op::Wrapper opWrapper{op::ThreadManagerMode::Asynchronous};
 
+
+    const auto outputSize = op::flagsToPoint(op::String(FLAGS_output_resolution), "-1x-1");
+    const auto netInputSize = op::flagsToPoint(op::String(FLAGS_net_resolution), "-1x160");
+    const auto faceNetInputSize = op::flagsToPoint(op::String(FLAGS_face_net_resolution), "368x368 (multiples of 16)");
+    const auto handNetInputSize = op::flagsToPoint(op::String(FLAGS_hand_net_resolution), "368x368 (multiples of 16)");
+    const auto poseMode = op::flagsToPoseMode(FLAGS_body);
+    const auto poseModel = op::flagsToPoseModel(op::String(FLAGS_model_pose));
+    
+    const auto keypointScaleMode = op::flagsToScaleMode(FLAGS_keypoint_scale);
+    const auto heatMapTypes = op::flagsToHeatMaps(FLAGS_heatmaps_add_parts, FLAGS_heatmaps_add_bkg, FLAGS_heatmaps_add_PAFs);
+    const auto heatMapScaleMode = op::flagsToHeatMapScaleMode(FLAGS_heatmaps_scale);
+    const auto multipleView = (FLAGS_3d || FLAGS_3d_views > 1);
+    const auto faceDetector = op::flagsToDetector(FLAGS_face_detector);
+    const auto handDetector = op::flagsToDetector(FLAGS_hand_detector);
+    const bool enableGoogleLogging = true;
+
     const op::WrapperStructPose wrapperStructPose{
         poseMode,
         netInputSize,
@@ -118,6 +134,7 @@ int main(int argc, char** argv) {
         (float)FLAGS_upsampling_ratio,
         enableGoogleLogging
     };
+    
     opWrapper.configure(wrapperStructPose);
     opWrapper.start();
     std::ofstream of("data.csv", std::ios::trunc);
