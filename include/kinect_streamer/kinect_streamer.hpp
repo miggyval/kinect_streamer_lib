@@ -50,6 +50,7 @@ public:
     void getPointCloudCuda(const float* depth, const uint32_t* registered, uint8_t* cloud_data, int width, int height);
     void getPointCloudCpu(const float* depth, const uint32_t* registered, uint8_t* cloud_data, int width, int height);
     void rowColDepthToXYZ(const float* row_arr, const float* col_arr, const float* depth_arr, float* x_arr, float* y_arr, float* z_arr, int numPoints);
+    void rowColDepthToXYZ_scalar(const float row, const float col, const float depth, float& x, float& y, float& z);
     void set_color_params(float cx, float cy, float fx, float fy);
     void set_ir_params(float cx, float cy, float fx, float fy, float k1, float k2, float k3, float p1, float p2);
     void get_color_params(float& cx, float& cy, float& fx, float& fy);

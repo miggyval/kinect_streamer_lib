@@ -124,7 +124,7 @@ void KinectDevice::rowColDepthToXYZ(const float* row_arr, const float* col_arr, 
         const float col = col_arr[n];
         const float depth_val = depth_arr[n] / 1000.0f;
 
-        if (!isnan(depth_val) && depth_val > 0.001) {
+        if (!isnan(depth_val) && depth_val > 0.0001) {
 
             x_arr[n] = -(col + 0.5 - cx) * fx * depth_val;
             y_arr[n] = (row + 0.5 - cy) * fy * depth_val;
@@ -136,6 +136,29 @@ void KinectDevice::rowColDepthToXYZ(const float* row_arr, const float* col_arr, 
             z_arr[n] = 0;
         }
     }
+}
+
+void KinectDevice::rowColDepthToXYZ_scalar(const float row, const float col, const float depth, float& x, float& y, float& z) {
+    
+    const float cx = ir_params.cx;
+    const float cy = ir_params.cy;
+    const float fx = 1 / ir_params.fx;
+    const float fy = 1 / ir_params.fy;
+
+    const float depth_val = depth / 1000.0f;
+
+    if (!isnan(depth_val) && depth_val > 0.0001) {
+
+        x = -(col + 0.5 - cx) * fx * depth_val;
+        y = (row + 0.5 - cy) * fy * depth_val;
+        z = depth_val;
+    } else {
+
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
 }
 
 /**
