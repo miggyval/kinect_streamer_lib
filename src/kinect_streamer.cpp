@@ -5,10 +5,8 @@
 #include <libfreenect2/registration.h>
 #include <libfreenect2/packet_pipeline.h>
 #include <libfreenect2/logger.h>
-
-#include <kinect_depth/kinect_depth.h>
-#include <cuda_runtime.h>
 #include <cstdio>
+#include <cmath>
 #include <cstring>
 
 #include <kinect_streamer/kinect_streamer.hpp>
@@ -192,7 +190,7 @@ void KinectDevice::rowColDepthToXYZ(const float* row_arr, const float* col_arr, 
         const float col = col_arr[n];
         const float depth_val = depth_arr[n] / 1000.0f;
 
-        if (!isnan(depth_val) && depth_val > 0.001) {
+        if (!std::isnan(depth_val) && depth_val > 0.001) {
 
             x_arr[n] = -(col + 0.5 - cx) * fx * depth_val;
             y_arr[n] = (row + 0.5 - cy) * fy * depth_val;
@@ -229,7 +227,7 @@ void KinectDevice::getPointCloudCpu(const float* depth, const uint32_t* register
         const int row = i / width;
         const int col = i % width;
         const float depth_val = depth[width * row + col] / 1000.0f;
-        if (!isnan(depth_val) && depth_val > 0.001) {
+        if (!std::isnan(depth_val) && depth_val > 0.001) {
             uint8_t* ptr = cloud_data + i * point_step;
             /* x-value */
             *(float*)(ptr + 0) = -(col + 0.5 - cx) * fx * depth_val;
@@ -240,52 +238,6 @@ void KinectDevice::getPointCloudCpu(const float* depth, const uint32_t* register
             /* rgb-value */
             *(uint32_t*)(ptr + 16) = registered[i];
         }
-    }
-}
-
-
-/**
- * @brief Uses GPU (CUDA) to process depth information to get Point Cloud (ROS - PCL)
- * 
- * @param depth         Depth Image
- * @param registered    Registered Image
- * @param cloud_data    ROS Point Cloud Data
- * @param width         Width of Image
- * @param height        Height of Image
- */
-void KinectDevice::getPointCloudCuda(const float* depth, const uint32_t* registered, uint8_t* cloud_data, int width, int height) {
-
-    uint8_t* cloud_data_gpu = NULL;
-    float* depth_gpu = NULL;
-    uint32_t* registered_gpu = NULL;
-
-    cudaError_t err = cudaSuccess;
-    const int point_step = 32;
-    err = cudaMalloc((void**)&cloud_data_gpu, DEPTH_W * DEPTH_H * point_step);
-
-    err = cudaMalloc((void**)&depth_gpu, DEPTH_W * DEPTH_H * sizeof(float));
-    err = cudaMalloc((void**)&registered_gpu, DEPTH_W * DEPTH_H * sizeof(uint32_t));
-
-    err = cudaMemcpy(depth_gpu, depth, DEPTH_W * DEPTH_H * sizeof(float), cudaMemcpyHostToDevice);
-    err = cudaMemcpy(registered_gpu, registered, DEPTH_W * DEPTH_H * sizeof(uint32_t), cudaMemcpyHostToDevice);
-
-    float cx = ir_params.cx;
-    float cy = ir_params.cy;
-    float fx = 1 / ir_params.fx;
-    float fy = 1 / ir_params.fy;
-
-    getPointXYZHelper(depth_gpu, registered_gpu, cloud_data_gpu, cx, cy, fx, fy, DEPTH_W, DEPTH_H);
-
-    err = cudaDeviceSynchronize();
-    err = cudaMemcpy(cloud_data, cloud_data_gpu, DEPTH_W * DEPTH_H * point_step, cudaMemcpyDeviceToHost);
-
-    err = cudaFree(cloud_data_gpu);
-    err = cudaFree(depth_gpu);
-    err = cudaFree(registered_gpu);
-
-    err = cudaGetLastError();
-    if (err != cudaSuccess) {
-        printf("%s %d\n\r", cudaGetErrorString(err), __LINE__);
     }
 }
 

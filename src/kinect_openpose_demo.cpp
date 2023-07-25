@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
 
 
     const auto outputSize = op::flagsToPoint(op::String(FLAGS_output_resolution), "-1x-1");
-    const auto netInputSize = op::flagsToPoint(op::String(FLAGS_net_resolution), "-1x160");
+    const auto netInputSize = op::flagsToPoint(op::String("-1x240"), "-1x16");
     const auto faceNetInputSize = op::flagsToPoint(op::String(FLAGS_face_net_resolution), "368x368 (multiples of 16)");
     const auto handNetInputSize = op::flagsToPoint(op::String(FLAGS_hand_net_resolution), "368x368 (multiples of 16)");
     const auto poseMode = op::flagsToPoseMode(FLAGS_body);
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
         (float)FLAGS_alpha_pose,
         (float)FLAGS_alpha_heatmap,
         FLAGS_part_to_show,
-        op::String("/home/medrobotics/openpose/models"),
+        op::String("/home/valencimm/Libraries/openpose/models"),
         heatMapTypes, heatMapScaleMode,
         FLAGS_part_candidates,
         (float)FLAGS_render_threshold,
@@ -148,6 +148,7 @@ int main(int argc, char** argv) {
     current_ticks = clock();
     while (!flag) {
         for (std::string serial : serials) {
+
             kin_devs[serial]->KinectDevice::wait_frames();
 
             libfreenect2::Frame* color = kin_devs[serial]->get_frame(libfreenect2::Frame::Color);
@@ -167,13 +168,6 @@ int main(int argc, char** argv) {
 
             registration->apply(color, depth, undistorted.get(), registered.get());
             registration->undistortDepth(depth, undistorted.get());
-
-
-                                delta_ticks = clock() - current_ticks;
-                                fps = CLOCKS_PER_SEC / delta_ticks;
-                                std::cout << fps << std::endl;
-                                current_ticks = clock();
-
     
             cv::Mat img_bgr;
             cv::cvtColor(img_color, img_bgr, cv::COLOR_BGRA2BGR);
@@ -190,7 +184,7 @@ int main(int argc, char** argv) {
             cv::Mat img_thresh2;
             cv::Mat img_thresh;
             
-            cv::threshold(img_depth, img_thresh1, 1500, 65535, cv::THRESH_BINARY_INV);
+            cv::threshold(img_depth, img_thresh1, 10000, 65535, cv::THRESH_BINARY_INV);
             cv::threshold(img_depth, img_thresh2, 1, 65535, cv::THRESH_BINARY);
             cv::bitwise_and(img_thresh1, img_thresh2, img_thresh);
             cv::Mat mask;
@@ -232,24 +226,6 @@ int main(int argc, char** argv) {
                                 float vel2 = (x - x_prev) * (x - x_prev) + (y - y_prev) * (y - y_prev) + (z - z_prev) * (z - z_prev);
                                 if (depth_arr[numPoints] != 0 && con >= 0.35 && !(x == 0 && y == 0 && z == 0) && (z > 0.025) && (vel2 < 0.25 * 0.25)) {
                                     of << x << "," << y << "," << z << std::endl;
-                                } else {
-                                    /*
-                                    if (depth_arr[numPoints] == 0) {
-                                        std::cout << "Depth invalid." << std::endl;
-                                    }
-                                    if (con < 0.35) {
-                                        std::cout << "Confidence too low" << std::endl;
-                                    }
-                                    if (x == 0 && y == 0 && z == 0) {
-                                        std::cout << "Coordinates invalid (0, 0, 0)" << std::endl;
-                                    }
-                                    if (z <= 0.35) {
-                                        std::cout << "Z-coordinate too close" << std::endl;
-                                        std::cout << "\t- " << z << std::endl;
-                                    }
-                                    if (vel2 >= 0.25 * 0.25) {
-                                        std::cout << "Velocity is too fast" << std::endl;
-                                    }*/
                                 }
                                 x_prev = x;
                                 y_prev = y;
@@ -260,22 +236,6 @@ int main(int argc, char** argv) {
                         }
                         break;
                     }
-
-                    /*
-                    float* x_arr = (float*)malloc(sizeof(float) * numPoints);
-                    float* y_arr = (float*)malloc(sizeof(float) * numPoints);
-                    float* z_arr = (float*)malloc(sizeof(float) * numPoints);
-                    */
-
-                    /*
-                    free(row_arr);
-                    free(col_arr);
-                    free(depth_arr);
-
-                    free(x_arr);
-                    free(y_arr);
-                    free(z_arr);
-                    */
                 }
             }
             cv::flip(img_bgr, img_bgr, 1);
