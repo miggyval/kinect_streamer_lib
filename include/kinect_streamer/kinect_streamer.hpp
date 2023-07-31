@@ -8,6 +8,8 @@
 #include <libfreenect2/registration.h>
 #include <libfreenect2/packet_pipeline.h>
 #include <libfreenect2/logger.h>
+#include <kinect_streamer/kinect_streamer_cuda.h>
+
 
 #define COLOR_W 1920
 #define COLOR_H 1080

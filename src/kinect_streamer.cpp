@@ -9,6 +9,8 @@
 #include <cmath>
 #include <cstring>
 
+#include <cuda_runtime.h>
+
 #include <kinect_streamer/kinect_streamer.hpp>
 
 /**
@@ -203,6 +205,46 @@ void KinectDevice::rowColDepthToXYZ(const float* row_arr, const float* col_arr, 
         }
     }
 }
+
+
+void KinectDevice::getPointCloudCuda(const float* depth, const uint32_t* registered, uint8_t* cloud_data, int width, int height) {
+
+    uint8_t* cloud_data_gpu = NULL;
+    float* depth_gpu = NULL;
+    uint32_t* registered_gpu = NULL;
+
+    cudaError_t err = cudaSuccess;
+    const int point_step = 32;
+    err = cudaMalloc((void**)&cloud_data_gpu, DEPTH_W * DEPTH_H * point_step);
+
+    err = cudaMalloc((void**)&depth_gpu, DEPTH_W * DEPTH_H * sizeof(float));
+    err = cudaMalloc((void**)&registered_gpu, DEPTH_W * DEPTH_H * sizeof(uint32_t));
+
+    err = cudaMemcpy(depth_gpu, depth, DEPTH_W * DEPTH_H * sizeof(float), cudaMemcpyHostToDevice);
+    err = cudaMemcpy(registered_gpu, registered, DEPTH_W * DEPTH_H * sizeof(uint32_t), cudaMemcpyHostToDevice);
+
+    float cx = ir_params.cx;
+    float cy = ir_params.cy;
+    float fx = 1 / ir_params.fx;
+    float fy = 1 / ir_params.fy;
+
+    getPointXYZHelper(depth_gpu, registered_gpu, cloud_data_gpu, cx, cy, fx, fy, DEPTH_W, DEPTH_H);
+
+    err = cudaDeviceSynchronize();
+    err = cudaMemcpy(cloud_data, cloud_data_gpu, DEPTH_W * DEPTH_H * point_step, cudaMemcpyDeviceToHost);
+
+    err = cudaFree(cloud_data_gpu);
+    err = cudaFree(depth_gpu);
+    err = cudaFree(registered_gpu);
+
+    err = cudaGetLastError();
+    if (err != cudaSuccess) {
+        printf("%s %d\n\r", cudaGetErrorString(err), __LINE__);
+    }
+
+
+}
+
 
 
 /**
