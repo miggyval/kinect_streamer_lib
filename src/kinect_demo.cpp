@@ -84,15 +84,29 @@ int main(int argc, char** argv) {
 
             libfreenect2::Frame* color = kin_devs[serial]->get_frame(libfreenect2::Frame::Color);
             libfreenect2::Frame* depth = kin_devs[serial]->get_frame(libfreenect2::Frame::Depth);
+            libfreenect2::Frame* ir = kin_devs[serial]->get_frame(libfreenect2::Frame::Ir);
 
             cv::Mat img_color(cv::Size(color->width, color->height), CV_8UC4, color->data);
             cv::Mat img_depth(cv::Size(depth->width, depth->height), CV_32FC1, depth->data);
+            cv::Mat img_ir(cv::Size(ir->width, ir->height), CV_32FC1, ir->data);
         
 
             cv::Mat img_bgr;
             cv::cvtColor(img_color, img_bgr, cv::COLOR_BGRA2BGR);
             cv::flip(img_bgr, img_bgr, 1);
-            cv::imshow(serial, img_bgr);
+            cv::imshow(serial + "_color", img_bgr);
+
+
+            img_depth /= 1024.0;
+            cv::flip(img_depth, img_depth, 1);
+            cv::imshow(serial + "_depth", img_depth);
+
+            img_ir /= 65535.0;
+            cv::flip(img_ir, img_ir, 1);
+            cv::imshow(serial + "_ir", img_ir);
+
+
+
             cv::waitKey(1);
             
             kin_devs[serial]->release_frames();

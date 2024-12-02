@@ -48,7 +48,6 @@ include_directories(
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -Xcompiler -fPIC")
-set_target_properties(kinect_depth PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 add_executable( kinect_demo	src/kinect_demo.cpp )
 if(BUILD_OPENPOSE)
