@@ -1,3 +1,5 @@
+#ifdef BUILD_OPENPOSE
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -293,3 +295,4 @@ int main(int argc, char** argv) {
     }
 }
 
+#endif

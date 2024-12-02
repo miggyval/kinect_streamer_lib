@@ -2,6 +2,7 @@
 #define KINECT_STREAMER_HPP
 
 #include <iostream>
+#include <cmath>
 
 #include <libfreenect2/libfreenect2.hpp>
 #include <libfreenect2/frame_listener_impl.h>
@@ -9,10 +10,10 @@
 #include <libfreenect2/packet_pipeline.h>
 #include <libfreenect2/logger.h>
 
-#include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
+
 
 #define COLOR_W 1920
 #define COLOR_H 1080
